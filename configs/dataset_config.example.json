@@ -1,0 +1,34 @@
+{
+  "holmes": {
+    "json": "/absolute/path/to/valid_data/holmes.json",
+    "video": "/absolute/path/to/Video-Holmes"
+  },
+  "lvbench": {
+    "json": "/absolute/path/to/valid_data/lvbench_partial.json",
+    "video": "/absolute/path/to/LVBench"
+  },
+  "longvideobench": {
+    "json": "/absolute/path/to/valid_data/longvideobench.json",
+    "video": "/absolute/path/to/LongVideoBench"
+  },
+  "mmvu": {
+    "json": "/absolute/path/to/valid_data/mmvu.json",
+    "video": "/absolute/path/to/MMVU"
+  },
+  "mvbench": {
+    "json": "/absolute/path/to/valid_data/mvbench.json",
+    "video": "/absolute/path/to/MVBench"
+  },
+  "tempcompass": {
+    "json": "/absolute/path/to/valid_data/tempcompass.json",
+    "video": "/absolute/path/to/TempCompass"
+  },
+  "vsibench": {
+    "json": "/absolute/path/to/valid_data/vsibench.json",
+    "video": "/absolute/path/to/VSI-Bench"
+  },
+  "videommmu": {
+    "json": "/absolute/path/to/valid_data/videommmu.json",
+    "video": "/absolute/path/to/VideoMMMU"
+  }
+}

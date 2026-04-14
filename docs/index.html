@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FFR | Find, Fix, Reason</title>
+    <meta
+      name="description"
+      content="Project page for FFR: Find, Fix, Reason, a teacher-guided context repair framework for video reasoning."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top">FFR</a>
+        <nav class="site-nav">
+          <a href="#overview">Overview</a>
+          <a href="#method">Method</a>
+          <a href="#results">Results</a>
+          <a href="#cases">Case Lab</a>
+          <a href="#citation">Citation</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero reveal" id="top">
+          <div class="hero-copy">
+            <p class="eyebrow" id="venue-line"></p>
+            <h1 id="project-title"></h1>
+            <p class="hero-subtitle" id="project-subtitle"></p>
+            <p class="hero-authors" id="author-line"></p>
+            <p class="hero-summary" id="hero-summary"></p>
+            <div class="hero-actions" id="hero-actions"></div>
+            <div class="hero-stats" id="hero-stats"></div>
+          </div>
+
+          <div class="hero-panel">
+            <div class="panel-kicker">Training regimes at a glance</div>
+            <div class="regime-grid" id="regime-grid"></div>
+          </div>
+        </section>
+
+        <section class="section reveal" id="overview">
+          <div class="section-head">
+            <p class="section-eyebrow">Overview</p>
+            <h2>Why context repair matters</h2>
+            <p>
+              FFR keeps the policy on-policy, but intervenes exactly when a rollout
+              misses the relevant spatiotemporal dependency.
+            </p>
+          </div>
+
+          <div class="overview-grid">
+            <article class="card prose-card">
+              <p class="mini-label">Abstract</p>
+              <p id="abstract-text"></p>
+            </article>
+
+            <article class="card insight-card">
+              <p class="mini-label">Core insights</p>
+              <div class="insight-list" id="insight-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section reveal" id="method">
+          <div class="section-head">
+            <p class="section-eyebrow">Method</p>
+            <h2>Find, fix, then reason again</h2>
+            <p>
+              The teacher never changes the question. It only supplies a minimal
+              evidence patch so the student can revisit the right part of the video.
+            </p>
+          </div>
+
+          <div class="method-grid">
+            <figure class="card figure-card">
+              <img
+                src="./assets/figures/figure-2-overview.png"
+                alt="Overview of FFR showing first-pass rollouts, teacher diagnosis, context patches, and repaired rollouts."
+              >
+              <figcaption>
+                Figure snapshot from the paper: the FFR loop augments failed rollouts
+                with targeted evidence instead of replacing the policy with an
+                off-policy teacher trajectory.
+              </figcaption>
+            </figure>
+
+            <div class="method-stack" id="method-stack"></div>
+          </div>
+        </section>
+
+        <section class="section reveal" id="results">
+          <div class="section-head">
+            <p class="section-eyebrow">Results</p>
+            <h2>Interactive benchmark explorer</h2>
+            <p>
+              Toggle between the main comparison, ablations, teacher-model analysis,
+              and patch-tax sensitivity. Values are transcribed from the paper and
+              supplementary tables.
+            </p>
+          </div>
+
+          <div class="results-controls">
+            <div class="toggle-row" id="view-toggles"></div>
+            <div class="toggle-row benchmark-row" id="metric-toggles"></div>
+          </div>
+
+          <div class="results-grid">
+            <article class="card chart-card">
+              <div class="chart-head">
+                <div>
+                  <p class="mini-label" id="chart-label"></p>
+                  <h3 id="chart-title"></h3>
+                </div>
+                <p id="chart-caption"></p>
+              </div>
+              <svg id="results-chart" viewBox="0 0 900 560" role="img" aria-label="Interactive benchmark chart"></svg>
+            </article>
+
+            <aside class="card results-notes">
+              <p class="mini-label">What to notice</p>
+              <div id="results-notes"></div>
+              <div class="results-table-wrap">
+                <table class="results-table">
+                  <thead>
+                    <tr>
+                      <th>Model / setting</th>
+                      <th id="results-table-head">Score</th>
+                    </tr>
+                  </thead>
+                  <tbody id="results-table-body"></tbody>
+                </table>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section reveal" id="cases">
+          <div class="section-head">
+            <p class="section-eyebrow">Case Lab</p>
+            <h2>Interactive cases and leakage-safe guidance</h2>
+            <p>
+              Inspect how FFR turns a failed rollout into a corrected one, and how
+              the teacher stays useful without leaking the answer.
+            </p>
+          </div>
+
+          <div class="case-lab">
+            <aside class="card case-nav" id="case-nav"></aside>
+            <article class="card case-panel">
+              <div class="case-head">
+                <div>
+                  <p class="mini-label" id="case-tag"></p>
+                  <h3 id="case-title"></h3>
+                </div>
+                <p class="case-principle" id="case-principle"></p>
+              </div>
+
+              <div class="case-content">
+                <div class="case-visual" id="case-visual"></div>
+                <div class="case-story" id="case-story"></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section reveal">
+          <div class="section-head">
+            <p class="section-eyebrow">Validation</p>
+            <h2>Prompt discipline and training dynamics</h2>
+            <p>
+              Two checks anchor the story: the teacher must not leak the answer, and
+              the student should rely less on intervention as training progresses.
+            </p>
+          </div>
+
+          <div class="validation-grid">
+            <article class="card validation-card">
+              <p class="mini-label">Leakage analysis</p>
+              <table class="results-table compact-table">
+                <thead>
+                  <tr>
+                    <th>Prompt design</th>
+                    <th>Direct</th>
+                    <th>Partial</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="leakage-body"></tbody>
+              </table>
+            </article>
+
+            <article class="card validation-card">
+              <p class="mini-label">Intervention dynamics</p>
+              <div class="stage-grid" id="stage-grid"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section reveal" id="citation">
+          <div class="section-head">
+            <p class="section-eyebrow">Resources</p>
+            <h2>Paper, supplement, and citation</h2>
+            <p>
+              The PDF assets are bundled locally in this project page so the site can
+              be deployed directly through GitHub Pages.
+            </p>
+          </div>
+
+          <div class="resource-grid">
+            <article class="card figure-card">
+              <img
+                src="./assets/figures/figure-3-case-study.png"
+                alt="Case study figure showing video frames, original wrong answer, teacher patch, and corrected reasoning."
+              >
+              <figcaption>
+                A representative FFR intervention: the teacher points to the right
+                temporal window, and the student recovers the correct answer without
+                being told what it is.
+              </figcaption>
+            </article>
+
+            <article class="card citation-card">
+              <div class="resource-links" id="resource-links"></div>
+              <div class="bibtex-box">
+                <p class="mini-label">BibTeX</p>
+                <pre id="bibtex-block"></pre>
+                <button class="copy-button" id="copy-bibtex" type="button">Copy BibTeX</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./assets/data/site-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

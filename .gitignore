@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+debug_log*.txt
+wandb/
+
+# Data & Outputs (large files)
+data/*.json
+data/*.jsonl
+output/
+eval/outputs/
+
+# Model checkpoints
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.key
+*.pem
+
+# Temporary
+*.tmp
+*.bak

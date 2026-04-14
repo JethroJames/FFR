@@ -1,0 +1,33 @@
+name: ffr
+
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch>=2.5
+  - torchvision
+  - torchaudio
+  - ffmpeg
+  - numpy>=1.26
+  - pillow>=10
+  - requests>=2.32
+  - pip:
+      - transformers>=4.49
+      - trl>=0.17
+      - accelerate>=1.2
+      - datasets>=3.2
+      - deepspeed>=0.16
+      - vllm>=0.7
+      - fastapi>=0.115
+      - uvicorn>=0.34
+      - openai>=1.66
+      - qwen-vl-utils>=0.0.10
+      - decord>=0.6
+      - nltk>=3.9
+      - rouge-score>=0.1.2
+      - wandb>=0.19
+      - sentencepiece>=0.2
