@@ -2,13 +2,9 @@
 
 ## Must Do Before Public Paper Release
 
-- Fill in final author names and affiliations in the project page:
-  - `docs/assets/data/site-data.js`
 - Add the final arXiv link once the paper is live:
   - `docs/assets/data/site-data.js`
   - `README.md`
-- Choose and add a repository license:
-  - `LICENSE`
 - Verify the GitHub Pages site is enabled:
   - repository settings -> Pages -> branch `main` / folder `docs`
 - Verify the main training and evaluation paths on a Linux machine with the intended CUDA stack

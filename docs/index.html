@@ -37,13 +37,25 @@
             <p class="eyebrow" id="venue-line"></p>
             <h1 id="project-title"></h1>
             <p class="hero-subtitle" id="project-subtitle"></p>
-            <p class="hero-authors" id="author-line"></p>
+            <div class="hero-authors" id="author-line"></div>
+            <div class="hero-affiliations" id="affiliation-list"></div>
+            <p class="hero-status" id="status-note"></p>
             <p class="hero-summary" id="hero-summary"></p>
             <div class="hero-actions" id="hero-actions"></div>
             <div class="hero-stats" id="hero-stats"></div>
           </div>
 
           <div class="hero-panel">
+            <div class="panel-kicker">Teaser figure</div>
+            <figure class="hero-figure">
+              <img
+                src="./assets/figures/figure-2-overview.png"
+                alt="Overview of FFR showing first-pass rollouts, teacher diagnosis, context patches, and repaired rollouts."
+              >
+              <figcaption>
+                FFR repairs failed rollouts by adding minimal evidence patches, then lets the student reason again under the original question.
+              </figcaption>
+            </figure>
             <div class="panel-kicker">Training regimes at a glance</div>
             <div class="regime-grid" id="regime-grid"></div>
           </div>

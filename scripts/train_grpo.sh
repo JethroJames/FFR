@@ -8,11 +8,11 @@ set -e
 BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 TEACHER_API_DIR="${BASE_DIR}/ffr/teacher"
 TRAIN_SCRIPT="${BASE_DIR}/ffr/train/grpo.py"
-PYTHON_ENV="${PYTHON_ENV:-/yourpath/miniconda3/envs/video-r1/bin}"
+PYTHON_ENV="${PYTHON_ENV:-/path/to/conda/envs/ffr/bin}"
 OUTPUT_DIR="${OUTPUT_DIR:-${BASE_DIR}/output/grpo}"
-MODEL_PATH="${MODEL_PATH:-/yourpath/video_reasoning/model/Qwen2.5-VL-7B-COT-SFT}"
+MODEL_PATH="${MODEL_PATH:-/path/to/Qwen2.5-VL-7B-COT-SFT}"
 DATASET_PATH="${DATASET_PATH:-${BASE_DIR}/data/rl_data.json}"
-VIDEO_DATA_PATH="${VIDEO_DATA_PATH:-/yourpath/video_reasoning/data/train/Video-R1-data}"
+VIDEO_DATA_PATH="${VIDEO_DATA_PATH:-/path/to/Video-R1-data}"
 export PYTHONPATH="${BASE_DIR}${PYTHONPATH:+:${PYTHONPATH}}"
 
 # ============================================================================

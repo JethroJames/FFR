@@ -65,29 +65,17 @@ The smoke test script is also designed to fail with a clearer dependency message
 
 ### High priority
 
-1. Missing license
-
-There is still no `LICENSE` file in the repository root. This is the most important remaining release blocker from a distribution standpoint because it leaves reuse terms undefined.
-
-2. Placeholder author metadata on the project page
-
-`docs/assets/data/site-data.js` still contains:
-
-- `authors: ["Anonymous Authors"]`
-
-That is fine for anonymous submission, but it should be replaced before a camera-ready or public identity-bearing release.
-
-3. Final paper URL is not wired yet
+1. Final paper URL is not wired yet
 
 The project page currently links to local PDFs and the GitHub repo, but there is no final arXiv URL yet. The README also correctly notes this as still pending.
 
 ### Medium priority
 
-4. Launch scripts still use placeholder local paths
+2. Launch scripts still use placeholder local paths
 
-The shell launchers under `scripts/` still contain defaults such as `/yourpath/...`. This is acceptable for internal examples, but public users will depend more on the README than on the shell defaults. A short comment in each script or more neutral placeholder values would reduce confusion.
+The shell launchers under `scripts/` still contain placeholder defaults such as `/path/to/...`. This is acceptable for examples, but public users will depend more on the README than on the shell defaults. A short comment in each script or more neutral auto-detected defaults would reduce confusion.
 
-5. Reproduction instructions are still high-level
+3. Reproduction instructions are still high-level
 
 The current README is good enough to orient readers, but exact reproduction still depends on local knowledge for:
 
@@ -114,17 +102,15 @@ The current README is good enough to orient readers, but exact reproduction stil
 
 ### Low publication risk after minor cleanup
 
-If you add a license, replace author placeholders when appropriate, and wire the final arXiv link, the repository is in a reasonable state for a public research release.
+With the license and named author metadata now in place, the remaining publication cleanup is mainly the final arXiv URL and one more end-to-end reproducibility pass.
 
 ## Recommended Final Checklist
 
 Before announcing the repository publicly, I recommend doing the following:
 
-1. Add a root `LICENSE`.
-2. Replace `Anonymous Authors` in `docs/assets/data/site-data.js`.
-3. Add the final arXiv URL to the project page and README.
-4. Run the full environment install from `environment.yml` on a clean machine.
-5. Re-run `python scripts/smoke_test.py` inside that environment.
+1. Add the final arXiv URL to the project page and README.
+2. Run the full environment install from `environment.yml` on a clean machine.
+3. Re-run `python scripts/smoke_test.py` inside that environment.
 
 ## Bottom Line
 

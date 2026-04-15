@@ -56,6 +56,27 @@
     }
   }
 
+  function renderAuthorMeta() {
+    const authorNode = document.getElementById("author-line");
+    authorNode.innerHTML = data.meta.authors
+      .map(
+        (author) =>
+          `<span class="author-pill">${author.name}<sup>${author.affiliations.join(",")}</sup></span>`
+      )
+      .join('<span class="author-separator">·</span>');
+
+    const affiliationRoot = document.getElementById("affiliation-list");
+    affiliationRoot.innerHTML = "";
+    data.meta.affiliations.forEach((item) => {
+      const chip = document.createElement("span");
+      chip.className = "affiliation-chip";
+      chip.innerHTML = `<strong>${item.id}</strong><span>${item.label}</span>`;
+      affiliationRoot.appendChild(chip);
+    });
+
+    setText("status-note", data.meta.statusNote);
+  }
+
   function renderLinks(targetId, links) {
     const root = document.getElementById(targetId);
     root.innerHTML = "";
@@ -80,6 +101,7 @@
     setText("project-title", data.meta.title);
     setText("project-subtitle", data.meta.subtitle);
     setText("author-line", data.meta.authors.join(" · "));
+    renderAuthorMeta();
     setText("hero-summary", data.meta.summary);
     setText("abstract-text", data.abstract);
     setText("bibtex-block", data.bibtex);
@@ -413,6 +435,8 @@
 
     setText("chart-label", meta.label);
     setText("chart-title", `${meta.title} · ${metricLabel(state.metric)}`);
+    setText("chart-title", `${meta.title} · ${metricLabel(state.metric)}`);
+    setText("chart-title", `${meta.title} / ${metricLabel(state.metric)}`);
     setText("chart-caption", meta.caption);
     setText("results-table-head", metricLabel(state.metric));
 

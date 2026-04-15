@@ -2,8 +2,21 @@ window.FFR_PROJECT = {
   meta: {
     title: "Find, Fix, Reason",
     subtitle: "Context Repair for Video Reasoning",
-    venue: "ICML 2026 project page",
-    authors: ["Anonymous Authors"],
+    venue: "ICML 2026 project page preview",
+    authors: [
+      { name: "Haojian Huang", affiliations: [1, 2, 3] },
+      { name: "Chuanyu Qin", affiliations: [4] },
+      { name: "Yinchuan Li", affiliations: [3] },
+      { name: "Yingcong Chen", affiliations: [1, 2, 3] }
+    ],
+    affiliations: [
+      { id: 1, label: "HKUST" },
+      { id: 2, label: "HKUST-GZ" },
+      { id: 3, label: "Knowin" },
+      { id: 4, label: "Institute of Information Engineering, Chinese Academy of Sciences" }
+    ],
+    statusNote:
+      "Private preview for now. GitHub Pages is intentionally not enabled yet, and the final arXiv link will be added after the paper page is ready.",
     summary:
       "FFR repairs failed video-reasoning rollouts with a frozen teacher that supplies minimal evidence patches. The policy stays on-policy, revisits the right spatiotemporal context, and improves without being handed the answer.",
     heroStats: [
@@ -31,8 +44,8 @@ window.FFR_PROJECT = {
     links: [
       { label: "Paper PDF", url: "./assets/papers/ffr-paper.pdf", style: "primary" },
       { label: "Supplement", url: "./assets/papers/ffr-supplement.pdf", style: "secondary" },
-      { label: "Project Page", url: "https://jethrojames.github.io/FFR/", style: "ghost" },
-      { label: "GitHub", url: "https://github.com/JethroJames/FFR", style: "ghost" }
+      { label: "GitHub", url: "https://github.com/JethroJames/FFR", style: "ghost" },
+      { label: "arXiv (coming soon)", url: "", style: "ghost" }
     ]
   },
   abstract:

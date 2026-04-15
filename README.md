@@ -49,8 +49,6 @@ Already addressed in this workspace:
 
 Still recommended before a public paper release:
 
-- add your final author metadata
-- add a license
 - add the final arXiv URL once available
 - publish exact model and data access instructions
 
@@ -147,14 +145,21 @@ Relevant environment variables:
 
 ## Project Page
 
-The academic project page lives in [`docs/`](./docs/) and is ready for GitHub Pages deployment.
+The academic project page lives in [`docs/`](./docs/) and is ready for local preview now. GitHub Pages can stay disabled until you want to publish it.
 
-Suggested public URLs:
+Current / planned URLs:
 
 - Repository: `https://github.com/JethroJames/FFR`
-- Project page: `https://jethrojames.github.io/FFR/`
+- Planned project page: `https://jethrojames.github.io/FFR/`
 
-If you use GitHub Pages, configure the repository to publish from the `docs/` directory on the `main` branch.
+For local preview, you can either open `docs/index.html` directly or run:
+
+```bash
+cd docs
+python -m http.server 8000
+```
+
+If you later enable GitHub Pages, configure the repository to publish from the `docs/` directory on the `main` branch.
 
 ## Paper Assets
 
