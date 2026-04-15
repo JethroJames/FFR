@@ -57,6 +57,13 @@ def main() -> int:
         check_paths()
         check_syntax()
         check_imports()
+    except ModuleNotFoundError as exc:  # pragma: no cover - smoke script
+        print(
+            "[FAIL] Missing Python dependency during import check: "
+            f"{exc}. Install the environment from environment.yml first.",
+            file=sys.stderr,
+        )
+        return 1
     except Exception as exc:  # pragma: no cover - smoke script
         print(f"[FAIL] {exc}", file=sys.stderr)
         return 1

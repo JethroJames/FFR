@@ -1,94 +1,131 @@
 # Code Completeness Audit
 
-## Verdict
+Last updated: 2026-04-15
 
-The repository already contains the core research logic for FFR: GRPO training, teacher-guided repair, evaluation, preprocessing, and ablation entry points. As a paper artifact, the code is conceptually complete but not yet fully public-release complete.
+## Overall Assessment
 
-In its original state, the main issues were not algorithmic gaps but release-readiness gaps:
+This repository is now in a much better state for a public research release than the original internal snapshot. The main training, evaluation, teacher-service, and project-page paths are present, and the most obvious package/import issues have been fixed. The repository should be viewed as a **research artifact suitable for public release**, not yet a fully turnkey reproduction package.
 
-1. **Blocking import/path bugs**
-   - `ffr/train/grpo.py` imported `trainer` as a top-level module.
-   - `ffr/teacher/server.py` imported `teacher` as a top-level module.
-   - `ffr/teacher/model.py` imported `prompt_template`, which does not exist in the repo.
-   - These issues were fixed in this pass by switching to package-qualified imports and by updating the GRPO/ablation launchers to export `PYTHONPATH` and start the teacher server via `ffr.teacher.server:app`.
+In short:
 
-2. **Environment reproducibility is incomplete**
-   - There is no `requirements.txt`, `environment.yml`, `pyproject.toml`, or Docker setup.
-   - The code imports a fairly large stack (`transformers`, `trl`, `datasets`, `vllm`, `deepspeed`, `fastapi`, `openai`, `qwen_vl_utils`, `decord`, `wandb`, `nltk`, `rouge_score`, etc.), but version constraints are not published.
+- The core code path is present.
+- The project page is present and deployable.
+- Basic release scaffolding is present.
+- A few publication-facing items are still missing.
 
-3. **Data reproducibility is incomplete**
-   - No sample training/eval JSONs are tracked.
-   - No sample `dataset_config` JSON is provided for evaluation.
-   - The README documents expected paths, but not the exact public directory schema needed to reproduce experiments.
+## What Is Now Complete
 
-4. **Launcher portability is limited**
-   - The shell scripts assume Bash/Linux semantics (`pkill`, `curl`, `kill -9`, `nohup`).
-   - GPU topology is partially hard-coded (`torchrun --nproc_per_node=8`, `CUDA_VISIBLE_DEVICES=4,5,6,7` in SFT).
-   - This is workable for internal runs, but brittle for outside users.
+### 1. Core code organization
 
-5. **Verification surface is thin**
-   - There are no smoke tests, CI checks, or minimal end-to-end commands that can be run without large models.
-   - `python -m compileall ffr` succeeds, but that only verifies syntax, not runtime compatibility.
+The repository now exposes a coherent package layout:
 
-6. **Public repo metadata is still sparse**
-   - No `LICENSE`.
-   - No release checklist.
-   - No benchmark manifest or expected-result snapshots.
+- `ffr/train/` for training entry points
+- `ffr/eval/` for evaluation
+- `ffr/teacher/` for the teacher API service
+- `ffr/trainer/` for training internals
+- `scripts/` for launch helpers
 
-## What Is Already Strong
+The previously broken imports around the training and teacher stack have been fixed so that package-based execution is possible.
 
-- The code layout mirrors the paper structure well.
-- FFR-specific logic is clearly surfaced in the GRPO trainer:
-  - teacher API call
-  - second-round generation
-  - patch tax / corrected reward
-  - FFR statistics logging
-- The supplementary material matches the repository closely.
-- Prompt engineering, leakage-prevention rules, and teacher behavior are documented in code and supplement.
-- Evaluation code covers multiple benchmarks and supports resume behavior.
+### 2. Public release scaffolding
 
-## What Was Fixed In This Pass
+The following public-release basics are now present:
 
-- `ffr/train/grpo.py`: import now uses `from ffr.trainer import ...`
-- `ffr/teacher/model.py`: imports now correctly reference `ffr.teacher.prompts` and `ffr.teacher.video_utils`
-- `ffr/teacher/server.py`: import now uses `from ffr.teacher import TeacherModel`
-- `scripts/train_grpo.sh`: exports `PYTHONPATH` and launches `uvicorn` with `ffr.teacher.server:app`
-- `scripts/run_ablation.sh`: same package-path fix as above
+- `README.md`
+- `environment.yml`
+- `configs/dataset_config.example.json`
+- `scripts/smoke_test.py`
+- `docs/` GitHub Pages site
 
-These were the highest-priority issues because they affect whether the advertised training flow can start at all.
+This is a meaningful improvement over a code drop that only contains research source files.
 
-## Remaining Gaps Before Public Open-Source Release
+### 3. Project page readiness
 
-1. Add an environment spec
-   - Prefer `environment.yml` or a pinned `requirements.txt`.
+The repository includes a polished academic website under `docs/` with:
 
-2. Add one public sample config for evaluation
-   - A minimal `dataset_config.example.json` would immediately improve usability.
+- abstract and core insights
+- method overview
+- benchmark tables
+- ablation/teacher/leakage/training-dynamics panels
+- interactive case explorer
+- bundled paper and supplement assets
 
-3. Add one smoke-test path
-   - Example: teacher API health check plus a tiny mocked request.
+This is sufficient for GitHub Pages deployment.
 
-4. Reduce hard-coded launcher assumptions
-   - GPU count
-   - visible devices
-   - shell/process management
+### 4. Basic verification coverage
 
-5. Add release metadata
-   - `LICENSE`
-   - model/data availability note
-   - expected command list for SFT / GRPO / eval / ablation
+The workspace has already passed lightweight structural checks such as:
 
-## Practical Recommendation
+- `python -m compileall ffr`
+- `python -m py_compile scripts/smoke_test.py`
 
-For an arXiv-linked code release, I would rate the repo as:
+The smoke test script is also designed to fail with a clearer dependency message if the Conda environment has not been installed yet.
 
-- **Research logic completeness:** high
-- **Public reproducibility completeness:** medium-low
-- **Immediate blocking bugs:** addressed in this pass
+## Remaining Gaps Before a Strong Public Release
 
-If you want, the next most valuable follow-up would be:
+### High priority
 
-1. add an `environment.yml`
-2. add `dataset_config.example.json`
-3. add one `smoke_test.sh` / `smoke_test.py`
-4. clean the README into a true release guide
+1. Missing license
+
+There is still no `LICENSE` file in the repository root. This is the most important remaining release blocker from a distribution standpoint because it leaves reuse terms undefined.
+
+2. Placeholder author metadata on the project page
+
+`docs/assets/data/site-data.js` still contains:
+
+- `authors: ["Anonymous Authors"]`
+
+That is fine for anonymous submission, but it should be replaced before a camera-ready or public identity-bearing release.
+
+3. Final paper URL is not wired yet
+
+The project page currently links to local PDFs and the GitHub repo, but there is no final arXiv URL yet. The README also correctly notes this as still pending.
+
+### Medium priority
+
+4. Launch scripts still use placeholder local paths
+
+The shell launchers under `scripts/` still contain defaults such as `/yourpath/...`. This is acceptable for internal examples, but public users will depend more on the README than on the shell defaults. A short comment in each script or more neutral placeholder values would reduce confusion.
+
+5. Reproduction instructions are still high-level
+
+The current README is good enough to orient readers, but exact reproduction still depends on local knowledge for:
+
+- dataset acquisition/preprocessing
+- expected hardware/runtime assumptions
+- teacher backend credentials and quota assumptions
+- which checkpoints correspond to the paper tables
+
+## Risk Review
+
+### Low technical risk
+
+- package layout
+- public website deployment
+- static assets for the paper page
+- basic import/syntax sanity
+- minimal CI-style syntax and asset verification
+
+### Medium technical risk
+
+- full environment resolution across different CUDA/Linux setups
+- distributed training reproducibility
+- external API dependence for the teacher service
+
+### Low publication risk after minor cleanup
+
+If you add a license, replace author placeholders when appropriate, and wire the final arXiv link, the repository is in a reasonable state for a public research release.
+
+## Recommended Final Checklist
+
+Before announcing the repository publicly, I recommend doing the following:
+
+1. Add a root `LICENSE`.
+2. Replace `Anonymous Authors` in `docs/assets/data/site-data.js`.
+3. Add the final arXiv URL to the project page and README.
+4. Run the full environment install from `environment.yml` on a clean machine.
+5. Re-run `python scripts/smoke_test.py` inside that environment.
+
+## Bottom Line
+
+The repository is no longer an incomplete internal snapshot. It now has the structure and presentation needed for a public research release, including a GitHub Pages project site and a basic release scaffold. The remaining issues are mostly **publication hygiene and reproducibility polish**, not missing core code.

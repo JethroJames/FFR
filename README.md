@@ -51,10 +51,11 @@ Still recommended before a public paper release:
 
 - add your final author metadata
 - add a license
-- add final arXiv / project URLs once available
+- add the final arXiv URL once available
 - publish exact model and data access instructions
 
 See [`CODE_COMPLETENESS_AUDIT.md`](./CODE_COMPLETENESS_AUDIT.md) for a more detailed review.
+See [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) for the final publish checklist.
 
 ## Environment
 
