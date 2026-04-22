@@ -1,6 +1,6 @@
 # Code Completeness Audit
 
-Last updated: 2026-04-15
+Last updated: 2026-04-22
 
 ## Overall Assessment
 
@@ -11,7 +11,7 @@ In short:
 - The core code path is present.
 - The project page is present and deployable.
 - Basic release scaffolding is present.
-- A few publication-facing items are still missing.
+- The main publication-facing links are now wired.
 
 ## What Is Now Complete
 
@@ -35,6 +35,7 @@ The following public-release basics are now present:
 - `environment.yml`
 - `configs/dataset_config.example.json`
 - `scripts/smoke_test.py`
+- `scripts/check_project_page.py`
 - `docs/` GitHub Pages site
 
 This is a meaningful improvement over a code drop that only contains research source files.
@@ -52,6 +53,8 @@ The repository includes a polished academic website under `docs/` with:
 
 This is sufficient for GitHub Pages deployment.
 
+The project page now links to the public arXiv record (`2604.16243`), arXiv PDF, supplement, and GitHub repository.
+
 ### 4. Basic verification coverage
 
 The workspace has already passed lightweight structural checks such as:
@@ -63,19 +66,9 @@ The smoke test script is also designed to fail with a clearer dependency message
 
 ## Remaining Gaps Before a Strong Public Release
 
-### High priority
-
-1. Final paper URL is not wired yet
-
-The project page currently links to local PDFs and the GitHub repo, but there is no final arXiv URL yet. The README also correctly notes this as still pending.
-
 ### Medium priority
 
-2. Launch scripts still use placeholder local paths
-
-The shell launchers under `scripts/` still contain placeholder defaults such as `/path/to/...`. This is acceptable for examples, but public users will depend more on the README than on the shell defaults. A short comment in each script or more neutral auto-detected defaults would reduce confusion.
-
-3. Reproduction instructions are still high-level
+1. Reproduction instructions are still high-level
 
 The current README is good enough to orient readers, but exact reproduction still depends on local knowledge for:
 
@@ -83,6 +76,10 @@ The current README is good enough to orient readers, but exact reproduction stil
 - expected hardware/runtime assumptions
 - teacher backend credentials and quota assumptions
 - which checkpoints correspond to the paper tables
+
+2. Full training remains environment dependent
+
+The shell launchers now fail fast when required model, dataset, video, or teacher API variables are absent, but full runs still require a Linux multi-GPU CUDA environment and external teacher API access.
 
 ## Risk Review
 
@@ -102,15 +99,15 @@ The current README is good enough to orient readers, but exact reproduction stil
 
 ### Low publication risk after minor cleanup
 
-With the license and named author metadata now in place, the remaining publication cleanup is mainly the final arXiv URL and one more end-to-end reproducibility pass.
+With the license, named author metadata, arXiv URL, GitHub URL, and project-page checks now in place, the remaining publication cleanup is mainly one more end-to-end reproducibility pass.
 
 ## Recommended Final Checklist
 
 Before announcing the repository publicly, I recommend doing the following:
 
-1. Add the final arXiv URL to the project page and README.
-2. Run the full environment install from `environment.yml` on a clean machine.
-3. Re-run `python scripts/smoke_test.py` inside that environment.
+1. Run the full environment install from `environment.yml` on a clean machine.
+2. Re-run `python scripts/smoke_test.py` inside that environment.
+3. Verify GitHub Pages deployment from `docs/` or the included Pages workflow.
 
 ## Bottom Line
 

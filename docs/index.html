@@ -1,261 +1,426 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FFR | Find, Fix, Reason</title>
-    <meta
-      name="description"
-      content="Project page for FFR: Find, Fix, Reason, a teacher-guided context repair framework for video reasoning."
-    >
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    >
-    <link rel="stylesheet" href="./styles.css">
-  </head>
-  <body>
-    <div class="bg-orb orb-a"></div>
-    <div class="bg-orb orb-b"></div>
-    <div class="page-shell">
-      <header class="site-header">
-        <a class="brand" href="#top">FFR</a>
-        <nav class="site-nav">
-          <a href="#overview">Overview</a>
-          <a href="#method">Method</a>
-          <a href="#results">Results</a>
-          <a href="#cases">Case Lab</a>
-          <a href="#citation">Citation</a>
-        </nav>
-      </header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find, Fix, Reason: Context Repair for Video Reasoning</title>
+  <meta name="description" content="Find, Fix, Reason repairs failed video-reasoning rollouts with a frozen teacher that supplies minimal evidence patches while preserving on-policy GRPO learning.">
+  <meta name="keywords" content="video reasoning, reinforcement learning, context repair, GRPO, multimodal large language models, arXiv 2026">
+  <meta name="author" content="Haojian Huang, Chuanyu Qin, Yinchuan Li, Yingcong Chen">
 
-      <main>
-        <section class="hero reveal" id="top">
-          <div class="hero-copy">
-            <p class="eyebrow" id="venue-line"></p>
-            <h1 id="project-title"></h1>
-            <p class="hero-subtitle" id="project-subtitle"></p>
-            <div class="hero-authors" id="author-line"></div>
-            <div class="hero-affiliations" id="affiliation-list"></div>
-            <p class="hero-status" id="status-note"></p>
-            <p class="hero-summary" id="hero-summary"></p>
-            <div class="hero-actions" id="hero-actions"></div>
-            <div class="hero-stats" id="hero-stats"></div>
-          </div>
+  <meta property="og:title" content="Find, Fix, Reason: Context Repair for Video Reasoning">
+  <meta property="og:description" content="A teacher-guided context repair framework for video reasoning that fixes failed rollouts with minimal evidence patches.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jethrojames.github.io/FFR/">
+  <meta property="og:image" content="https://jethrojames.github.io/FFR/assets/figures/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Find, Fix, Reason: Context Repair for Video Reasoning">
+  <meta name="twitter:description" content="A teacher-guided context repair framework for video reasoning.">
+  <meta name="twitter:image" content="https://jethrojames.github.io/FFR/assets/figures/social-preview.png">
 
-          <div class="hero-panel">
-            <div class="panel-kicker">Teaser figure</div>
-            <figure class="hero-figure">
-              <img
-                src="./assets/figures/figure-2-overview.png"
-                alt="Overview of FFR showing first-pass rollouts, teacher diagnosis, context patches, and repaired rollouts."
-              >
-              <figcaption>
-                FFR repairs failed rollouts by adding minimal evidence patches, then lets the student reason again under the original question.
-              </figcaption>
-            </figure>
-            <div class="panel-kicker">Training regimes at a glance</div>
-            <div class="regime-grid" id="regime-grid"></div>
-          </div>
-        </section>
+  <meta name="citation_title" content="Find, Fix, Reason: Context Repair for Video Reasoning">
+  <meta name="citation_author" content="Huang, Haojian">
+  <meta name="citation_author" content="Qin, Chuanyu">
+  <meta name="citation_author" content="Li, Yinchuan">
+  <meta name="citation_author" content="Chen, Yingcong">
+  <meta name="citation_publication_date" content="2026/04/17">
+  <meta name="citation_arxiv_id" content="2604.16243">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2604.16243">
 
-        <section class="section reveal" id="overview">
-          <div class="section-head">
-            <p class="section-eyebrow">Overview</p>
-            <h2>Why context repair matters</h2>
-            <p>
-              FFR keeps the policy on-policy, but intervenes exactly when a rollout
-              misses the relevant spatiotemporal dependency.
-            </p>
-          </div>
+  <link rel="icon" href="./assets/figures/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./styles.css">
 
-          <div class="overview-grid">
-            <article class="card prose-card">
-              <p class="mini-label">Abstract</p>
-              <p id="abstract-text"></p>
-            </article>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "name": "Find, Fix, Reason: Context Repair for Video Reasoning",
+    "headline": "Find, Fix, Reason: Context Repair for Video Reasoning",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Haojian Huang",
+        "affiliation": ["HKUST", "HKUST-GZ", "Knowin"]
+      },
+      {
+        "@type": "Person",
+        "name": "Chuanyu Qin",
+        "affiliation": "Institute of Information Engineering, Chinese Academy of Sciences"
+      },
+      {
+        "@type": "Person",
+        "name": "Yinchuan Li",
+        "affiliation": "Knowin"
+      },
+      {
+        "@type": "Person",
+        "name": "Yingcong Chen",
+        "affiliation": ["HKUST", "HKUST-GZ", "Knowin"]
+      }
+    ],
+    "datePublished": "2026-04-17",
+    "publisher": {
+      "@type": "Organization",
+      "name": "arXiv"
+    },
+    "identifier": "arXiv:2604.16243",
+    "url": "https://arxiv.org/abs/2604.16243",
+    "sameAs": [
+      "https://doi.org/10.48550/arXiv.2604.16243",
+      "https://github.com/JethroJames/FFR"
+    ],
+    "keywords": ["video reasoning", "reinforcement learning", "context repair", "GRPO", "multimodal large language models"],
+    "abstract": "Find, Fix, Reason introduces an observation-level intervention for video reasoning: a frozen teacher identifies missing spatiotemporal dependencies in failed rollouts and returns a minimal evidence patch from the same video. The student answers again with the added context, and GRPO updates are applied to the chosen rollout through a robust improvement reward."
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="FFR home">FFR</a>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#visuals">Visuals</a>
+        <a href="#citation">Citation</a>
+      </div>
+    </nav>
+  </header>
 
-            <article class="card insight-card">
-              <p class="mini-label">Core insights</p>
-              <div class="insight-list" id="insight-list"></div>
-            </article>
-          </div>
-        </section>
+  <main id="top">
+    <section class="hero">
+      <div class="container narrow center">
+        <p class="venue">arXiv 2026 Project Page</p>
+        <h1>Find, Fix, Reason: Context Repair for Video Reasoning</h1>
+        <p class="subtitle">
+          A teacher-guided repair framework that turns failed video-reasoning rollouts into evidence-aligned training signals.
+        </p>
 
-        <section class="section reveal" id="method">
-          <div class="section-head">
-            <p class="section-eyebrow">Method</p>
-            <h2>Find, fix, then reason again</h2>
-            <p>
-              The teacher never changes the question. It only supplies a minimal
-              evidence patch so the student can revisit the right part of the video.
-            </p>
-          </div>
+        <div class="authors" aria-label="Authors">
+          <span>Haojian Huang<sup>1,2,3</sup></span>
+          <span>Chuanyu Qin<sup>4</sup></span>
+          <span>Yinchuan Li<sup>3</sup></span>
+          <span>Yingcong Chen<sup>1,2,3</sup></span>
+        </div>
 
-          <div class="method-grid">
-            <figure class="card figure-card">
-              <img
-                src="./assets/figures/figure-2-overview.png"
-                alt="Overview of FFR showing first-pass rollouts, teacher diagnosis, context patches, and repaired rollouts."
-              >
-              <figcaption>
-                Figure snapshot from the paper: the FFR loop augments failed rollouts
-                with targeted evidence instead of replacing the policy with an
-                off-policy teacher trajectory.
-              </figcaption>
-            </figure>
+        <div class="affiliations" aria-label="Affiliations">
+          <span><sup>1</sup>HKUST</span>
+          <span><sup>2</sup>HKUST-GZ</span>
+          <span><sup>3</sup>Knowin</span>
+          <span><sup>4</sup>Institute of Information Engineering, Chinese Academy of Sciences</span>
+        </div>
 
-            <div class="method-stack" id="method-stack"></div>
-          </div>
-        </section>
+        <div class="action-row" aria-label="Project resources">
+          <a class="action primary" href="https://arxiv.org/abs/2604.16243" target="_blank" rel="noopener noreferrer">
+            <i class="ai ai-arxiv" aria-hidden="true"></i>
+            <span>arXiv</span>
+          </a>
+          <a class="action" href="https://arxiv.org/pdf/2604.16243" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+            <span>PDF</span>
+          </a>
+          <a class="action" href="./assets/papers/ffr-supplement.pdf">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+            <span>Supplement</span>
+          </a>
+          <a class="action" href="https://github.com/JethroJames/FFR" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            <span>Code</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-        <section class="section reveal" id="results">
-          <div class="section-head">
-            <p class="section-eyebrow">Results</p>
-            <h2>Interactive benchmark explorer</h2>
-            <p>
-              Toggle between the main comparison, ablations, teacher-model analysis,
-              and patch-tax sensitivity. Values are transcribed from the paper and
-              supplementary tables.
-            </p>
-          </div>
+    <section class="teaser-section">
+      <div class="container">
+        <figure class="paper-figure wide">
+          <img src="./assets/figures/teaser-regimes.png" alt="Comparison of on-policy training, hybrid replay, tool-use loops, and the FFR context repair regime.">
+          <figcaption>
+            FFR repairs failed rollouts by adding a minimal evidence patch from the original video, then lets the same policy reason again under the original question.
+          </figcaption>
+        </figure>
+        <p class="tldr">
+          <strong>TL;DR:</strong> FFR keeps video RL on-policy while using a stronger frozen teacher to expose the missing spatiotemporal evidence behind failed rollouts.
+        </p>
+      </div>
+    </section>
 
-          <div class="results-controls">
-            <div class="toggle-row" id="view-toggles"></div>
-            <div class="toggle-row benchmark-row" id="metric-toggles"></div>
-          </div>
+    <section class="section light" id="abstract">
+      <div class="container text-column">
+        <h2>Abstract</h2>
+        <p>
+          Reinforcement learning has improved video reasoning, but existing pipelines either depend on self-exploration that saturates at the model's own capability ceiling, or mix off-policy guidance in ways that complicate optimization. FFR introduces an observation-level intervention: when a rollout fails, a frozen tool-integrated teacher identifies the missing spatiotemporal dependency and returns a minimal evidence patch from the original video. The student then answers again with the added context, and GRPO updates are applied to the repaired trajectory through a robust improvement reward. Across multiple video reasoning and general video benchmarks, this produces consistent accuracy gains while preserving the benefits of on-policy exploration.
+        </p>
+      </div>
+    </section>
 
-          <div class="results-grid">
-            <article class="card chart-card">
-              <div class="chart-head">
-                <div>
-                  <p class="mini-label" id="chart-label"></p>
-                  <h3 id="chart-title"></h3>
-                </div>
-                <p id="chart-caption"></p>
-              </div>
-              <svg id="results-chart" viewBox="0 0 900 560" role="img" aria-label="Interactive benchmark chart"></svg>
-            </article>
+    <section class="section" id="method">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Method Overview</p>
+          <h2>Repair the observation, then train on the chosen rollout.</h2>
+        </div>
 
-            <aside class="card results-notes">
-              <p class="mini-label">What to notice</p>
-              <div id="results-notes"></div>
-              <div class="results-table-wrap">
-                <table class="results-table">
-                  <thead>
-                    <tr>
-                      <th>Model / setting</th>
-                      <th id="results-table-head">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody id="results-table-body"></tbody>
-                </table>
-              </div>
-            </aside>
-          </div>
-        </section>
+        <figure class="paper-figure wide">
+          <img src="./assets/figures/method-overview.png" alt="Overview diagram of the FFR pipeline with first-pass rollouts, teacher diagnosis, evidence patching, repaired rollouts, and GRPO updates.">
+          <figcaption>
+            The teacher intervenes only on failed rollouts, extracts evidence from the same video, and constrains the patch so the answer is not leaked.
+          </figcaption>
+        </figure>
 
-        <section class="section reveal" id="cases">
-          <div class="section-head">
-            <p class="section-eyebrow">Case Lab</p>
-            <h2>Interactive cases and leakage-safe guidance</h2>
-            <p>
-              Inspect how FFR turns a failed rollout into a corrected one, and how
-              the teacher stays useful without leaking the answer.
-            </p>
-          </div>
+        <div class="method-grid">
+          <article class="step-card">
+            <span class="step-index">01</span>
+            <h3>Find the missing dependency</h3>
+            <p>A frozen teacher inspects incorrect rollouts and classifies what the student missed, such as temporal order, spatial relation, or task misconception.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-index">02</span>
+            <h3>Fix with minimal evidence</h3>
+            <p>The patch points to key frames, temporal markers, or regions from the original video while avoiding direct answer clues.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-index">03</span>
+            <h3>Reason again and update</h3>
+            <p>The same policy re-answers with the patch. GRPO then updates on the original correct rollout or the repaired rollout, with a patch tax controlling reliance on guidance.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-          <div class="case-lab">
-            <aside class="card case-nav" id="case-nav"></aside>
-            <article class="card case-panel">
-              <div class="case-head">
-                <div>
-                  <p class="mini-label" id="case-tag"></p>
-                  <h3 id="case-title"></h3>
-                </div>
-                <p class="case-principle" id="case-principle"></p>
-              </div>
+    <section class="section light" id="findings">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Key Findings</p>
+          <h2>Small, targeted repairs shift the training signal.</h2>
+        </div>
+        <div class="finding-grid">
+          <article class="finding-card">
+            <h3>FFR improves both reasoning and general video benchmarks</h3>
+            <p>Compared with Video-R1-SFT, FFR with GLM-4.5V lifts the eight-benchmark average from 47.8 to 56.5.</p>
+          </article>
+          <article class="finding-card">
+            <h3>Context repair beats direct teacher imitation</h3>
+            <p>FFR with a 32B teacher reaches a 51.2 reasoning average, surpassing SFT with a 235B teacher at 50.7.</p>
+          </article>
+          <article class="finding-card">
+            <h3>Visual evidence matters</h3>
+            <p>Removing visual context drops Video-Holmes from 52.3 to 42.3, showing that key-frame and spatial cues are central to the repair.</p>
+          </article>
+          <article class="finding-card">
+            <h3>The final prompt design prevents answer leakage</h3>
+            <p>Structured output constraints plus negative prompting reduce manually verified direct and partial leakage to 0%.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-              <div class="case-content">
-                <div class="case-visual" id="case-visual"></div>
-                <div class="case-story" id="case-story"></div>
-              </div>
-            </article>
-          </div>
-        </section>
+    <section class="section" id="results">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Main Results</p>
+          <h2>FFR consistently strengthens video reasoners.</h2>
+        </div>
+        <p class="section-copy">
+          The main table compares video reasoning benchmarks and general video understanding benchmarks. FFR improves the corresponding Video-R1 and VideoRFT training baselines across every reported metric.
+        </p>
 
-        <section class="section reveal">
-          <div class="section-head">
-            <p class="section-eyebrow">Validation</p>
-            <h2>Prompt discipline and training dynamics</h2>
-            <p>
-              Two checks anchor the story: the teacher must not leak the answer, and
-              the student should rely less on intervention as training progresses.
-            </p>
-          </div>
+        <div class="table-scroll" role="region" aria-label="Main quantitative results table" tabindex="0">
+          <table>
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>MMVU</th>
+                <th>VSI-Bench</th>
+                <th>VideoMMMU</th>
+                <th>Video-Holmes</th>
+                <th>LongVideoBench</th>
+                <th>LVBench</th>
+                <th>MVBench</th>
+                <th>TempCompass</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GPT-4o</td>
+                <td>75.4</td>
+                <td>34.0</td>
+                <td>61.2</td>
+                <td>42.0</td>
+                <td>58.5</td>
+                <td>48.9</td>
+                <td>64.6</td>
+                <td>73.75</td>
+              </tr>
+              <tr>
+                <td>Video-R1-SFT</td>
+                <td>61.3</td>
+                <td>31.8</td>
+                <td>47.4</td>
+                <td>34.6</td>
+                <td>47.6</td>
+                <td>30.7</td>
+                <td>59.4</td>
+                <td>69.2</td>
+              </tr>
+              <tr>
+                <td>Video-R1</td>
+                <td>63.8</td>
+                <td>35.8</td>
+                <td>52.3</td>
+                <td>36.5</td>
+                <td>52.7</td>
+                <td>35.3</td>
+                <td>63.9</td>
+                <td>73.2</td>
+              </tr>
+              <tr class="highlight">
+                <td>FFR + Video-R1</td>
+                <td>68.5</td>
+                <td>38.9</td>
+                <td>54.6</td>
+                <td>52.3</td>
+                <td>55.3</td>
+                <td>38.1</td>
+                <td>68.8</td>
+                <td>75.6</td>
+              </tr>
+              <tr>
+                <td>VideoRFT-SFT</td>
+                <td>60.5</td>
+                <td>31.7</td>
+                <td>48.5</td>
+                <td>27.1</td>
+                <td>47.3</td>
+                <td>26.9</td>
+                <td>57.0</td>
+                <td>68.4</td>
+              </tr>
+              <tr>
+                <td>VideoRFT</td>
+                <td>68.5</td>
+                <td>36.8</td>
+                <td>51.1</td>
+                <td>40.0</td>
+                <td>52.5</td>
+                <td>33.9</td>
+                <td>62.1</td>
+                <td>73.7</td>
+              </tr>
+              <tr class="highlight secondary">
+                <td>FFR + VideoRFT</td>
+                <td>70.1</td>
+                <td>38.6</td>
+                <td>54.9</td>
+                <td>48.0</td>
+                <td>54.9</td>
+                <td>37.8</td>
+                <td>68.2</td>
+                <td>75.4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-          <div class="validation-grid">
-            <article class="card validation-card">
-              <p class="mini-label">Leakage analysis</p>
-              <table class="results-table compact-table">
-                <thead>
-                  <tr>
-                    <th>Prompt design</th>
-                    <th>Direct</th>
-                    <th>Partial</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody id="leakage-body"></tbody>
-              </table>
-            </article>
+        <div class="stat-grid">
+          <article class="stat-card">
+            <strong>+51.16%</strong>
+            <span>Video-Holmes relative gain over Video-R1-SFT.</span>
+          </article>
+          <article class="stat-card">
+            <strong>56.5</strong>
+            <span>Best average score with GLM-4.5V as teacher.</span>
+          </article>
+          <article class="stat-card">
+            <strong>kappa = 0.3</strong>
+            <span>Best patch-tax setting in the sensitivity sweep.</span>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            <article class="card validation-card">
-              <p class="mini-label">Intervention dynamics</p>
-              <div class="stage-grid" id="stage-grid"></div>
-            </article>
-          </div>
-        </section>
+    <section class="section light" id="visuals">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Visual Evidence</p>
+          <h2>Case studies and mechanism checks.</h2>
+        </div>
 
-        <section class="section reveal" id="citation">
-          <div class="section-head">
-            <p class="section-eyebrow">Resources</p>
-            <h2>Paper, supplement, and citation</h2>
-            <p>
-              The PDF assets are bundled locally in this project page so the site can
-              be deployed directly through GitHub Pages.
-            </p>
-          </div>
+        <div class="gallery-tabs" role="tablist" aria-label="Visual result figures">
+          <button class="gallery-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-case" data-target="panel-case">Case Study</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-intervention" data-target="panel-intervention">Intervention</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-teacher" data-target="panel-teacher">Teacher Choice</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-kappa" data-target="panel-kappa">Patch Tax</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-rl" data-target="panel-rl">RL Methods</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-errors" data-target="panel-errors">Error Types</button>
+        </div>
 
-          <div class="resource-grid">
-            <article class="card figure-card">
-              <img
-                src="./assets/figures/figure-3-case-study.png"
-                alt="Case study figure showing video frames, original wrong answer, teacher patch, and corrected reasoning."
-              >
-              <figcaption>
-                A representative FFR intervention: the teacher points to the right
-                temporal window, and the student recovers the correct answer without
-                being told what it is.
-              </figcaption>
-            </article>
+        <div class="gallery-panels">
+          <figure class="gallery-panel is-active" id="panel-case" role="tabpanel">
+            <img src="./assets/figures/case-study.png" alt="STAR case study showing sampled frames, the student's wrong answer, the teacher evidence patch, and the corrected answer.">
+            <figcaption>The patch redirects the student to frames 13-15 and the hand-release event without revealing that the answer is the book.</figcaption>
+          </figure>
+          <figure class="gallery-panel" id="panel-intervention" role="tabpanel" hidden>
+            <img src="./assets/figures/intervention-frequency.png" alt="Line and bar chart showing intervention ratio falling from early to late training while accuracy improves.">
+            <figcaption>Teacher intervention falls by 48% from early to late training while accuracy rises, suggesting that the student internalizes the repair behavior.</figcaption>
+          </figure>
+          <figure class="gallery-panel" id="panel-teacher" role="tabpanel" hidden>
+            <img src="./assets/figures/teacher-pareto.png" alt="Pareto plot comparing teacher models by accuracy and cost.">
+            <figcaption>GLM-4.5V offers the strongest cost-performance trade-off among the evaluated teacher models.</figcaption>
+          </figure>
+          <figure class="gallery-panel" id="panel-kappa" role="tabpanel" hidden>
+            <img src="./assets/figures/kappa-sensitivity.png" alt="Sensitivity plot showing benchmark averages across patch tax values.">
+            <figcaption>The patch tax balances useful repair against over-reliance; kappa = 0.3 gives the best overall average.</figcaption>
+          </figure>
+          <figure class="gallery-panel" id="panel-rl" role="tabpanel" hidden>
+            <img src="./assets/figures/rl-comparison.png" alt="Bar chart comparing FFR with other reinforcement learning methods in video reasoning.">
+            <figcaption>Across the evaluated RL alternatives, FFR gains the most from dynamically acquiring the missing context for failed rollouts.</figcaption>
+          </figure>
+          <figure class="gallery-panel compact-figure" id="panel-errors" role="tabpanel" hidden>
+            <img src="./assets/figures/error-types.png" alt="Pie chart showing misconception, spatial, and temporal error distributions.">
+            <figcaption>Misconception errors dominate the teacher's diagnosis distribution, followed by spatial and temporal errors.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-            <article class="card citation-card">
-              <div class="resource-links" id="resource-links"></div>
-              <div class="bibtex-box">
-                <p class="mini-label">BibTeX</p>
-                <pre id="bibtex-block"></pre>
-                <button class="copy-button" id="copy-bibtex" type="button">Copy BibTeX</button>
-              </div>
-            </article>
-          </div>
-        </section>
-      </main>
+    <section class="section" id="citation">
+      <div class="container text-column">
+        <h2>Citation</h2>
+        <p>Please cite the paper if you use FFR or the released code.</p>
+        <div class="bibtex-wrap">
+          <pre id="bibtex">@misc{huang2026findfixreason,
+  title={Find, Fix, Reason: Context Repair for Video Reasoning},
+  author={Huang, Haojian and Qin, Chuanyu and Li, Yinchuan and Chen, Yingcong},
+  year={2026},
+  eprint={2604.16243},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  doi={10.48550/arXiv.2604.16243},
+  url={https://arxiv.org/abs/2604.16243}
+}</pre>
+          <button class="copy-button" type="button" data-copy-target="bibtex">
+            <i class="fa-regular fa-copy" aria-hidden="true"></i>
+            <span>Copy BibTeX</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>Find, Fix, Reason: Context Repair for Video Reasoning. arXiv:2604.16243.</p>
+      <p>Page structure inspired by the Academic Project Page Template.</p>
     </div>
+  </footer>
 
-    <script src="./assets/data/site-data.js"></script>
-    <script src="./app.js"></script>
-  </body>
+  <script src="./app.js"></script>
+</body>
 </html>

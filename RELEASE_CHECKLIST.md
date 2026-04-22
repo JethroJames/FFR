@@ -1,24 +1,25 @@
 # Release Checklist
 
-## Must Do Before Public Paper Release
+## Current Public Release State
 
-- Add the final arXiv link once the paper is live:
-  - `docs/assets/data/site-data.js`
-  - `README.md`
-- Verify the GitHub Pages site is enabled:
-  - repository settings -> Pages -> branch `main` / folder `docs`
-- Verify the main training and evaluation paths on a Linux machine with the intended CUDA stack
+- arXiv link is wired in `README.md` and `docs/index.html`: <https://arxiv.org/abs/2604.16243>
+- GitHub repository link is wired in the project page: <https://github.com/JethroJames/FFR>
+- Static project-page checks are available via `python scripts/check_project_page.py`
+- GitHub Pages can deploy either from `docs/` on `main` or through `.github/workflows/pages.yml`
 
-## Recommended
+## Still Recommended
 
-- Replace placeholder environment paths in shell scripts with your actual internal examples if you want the docs to be more concrete
 - Add exact dataset access instructions and expected directory structure for each benchmark
 - Expand CI beyond the current syntax-and-assets sanity workflow if you want stronger public release guarantees
-- Add one short "known limitations" section to the README
+- Verify the main training and evaluation paths on a Linux machine with the intended CUDA stack
+- Verify the GitHub Pages site is enabled:
+  - repository settings -> Pages -> source `GitHub Actions`, or
+  - repository settings -> Pages -> branch `main` / folder `docs`
 
 ## Quick Sanity Checks
 
 - `python -m compileall ffr`
 - `python scripts/smoke_test.py`
+- `python scripts/check_project_page.py`
 - open `docs/index.html` locally and verify the page renders
 - verify `git push` and GitHub Pages deployment

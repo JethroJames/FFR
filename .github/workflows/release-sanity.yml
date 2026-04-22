@@ -31,9 +31,13 @@ jobs:
               root / "docs" / "index.html",
               root / "docs" / "app.js",
               root / "docs" / "styles.css",
-              root / "docs" / "assets" / "data" / "site-data.js",
+              root / "docs" / "assets" / "figures" / "teaser-regimes.png",
+              root / "docs" / "assets" / "figures" / "method-overview.png",
+              root / "docs" / "assets" / "figures" / "case-study.png",
+              root / "docs" / "assets" / "figures" / "social-preview.png",
               root / "docs" / "assets" / "papers" / "ffr-paper.pdf",
               root / "docs" / "assets" / "papers" / "ffr-supplement.pdf",
+              root / "scripts" / "check_project_page.py",
           ]
           missing = [str(path) for path in required if not path.exists()]
           if missing:
@@ -46,3 +50,6 @@ jobs:
 
       - name: Check smoke-test syntax
         run: python -m py_compile scripts/smoke_test.py
+
+      - name: Check project page
+        run: python scripts/check_project_page.py

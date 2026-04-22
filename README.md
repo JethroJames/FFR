@@ -11,6 +11,7 @@ This repository contains the code and project page assets for **FFR (Find, Fix, 
 - GRPO-based training with teacher-guided repair
 - Evaluation and ablation entry points for the main benchmarks in the paper
 - A bundled GitHub Pages-style project site under [`docs/`](./docs/)
+- Public paper metadata wired to arXiv: [`2604.16243`](https://arxiv.org/abs/2604.16243)
 
 ## Repository Layout
 
@@ -27,6 +28,7 @@ FFR-code/
 |   |-- train/
 |   `-- trainer/
 |-- scripts/
+|   |-- check_project_page.py
 |   |-- run_ablation.sh
 |   |-- run_eval.sh
 |   |-- smoke_test.py
@@ -46,14 +48,23 @@ Already addressed in this workspace:
 - package import issues in the GRPO and teacher paths
 - public-facing project page under `docs/`
 - basic release scaffolding (`environment.yml`, smoke test, dataset config example)
+- final arXiv and GitHub URLs in the README and project page
 
-Still recommended before a public paper release:
+Still recommended for stronger reproducibility:
 
-- add the final arXiv URL once available
-- publish exact model and data access instructions
+- publish exact model checkpoint and dataset access instructions when those artifacts are ready
+- run the full training/evaluation environment on the target Linux + CUDA stack
 
 See [`CODE_COMPLETENESS_AUDIT.md`](./CODE_COMPLETENESS_AUDIT.md) for a more detailed review.
 See [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) for the final publish checklist.
+
+## Paper and Links
+
+- Paper: <https://arxiv.org/abs/2604.16243>
+- PDF: <https://arxiv.org/pdf/2604.16243>
+- DOI: <https://doi.org/10.48550/arXiv.2604.16243>
+- Code: <https://github.com/JethroJames/FFR>
+- Project page: <https://jethrojames.github.io/FFR/>
 
 ## Environment
 
@@ -69,6 +80,7 @@ Notes:
 - The environment file covers the main Python dependencies used by the codebase.
 - `flash-attn` and some distributed-training dependencies are hardware/platform sensitive and may still need to be installed separately depending on your CUDA stack.
 - Linux is the recommended runtime for training and evaluation.
+- The shell launchers use `python` and `torchrun` from your active shell by default. Set `PYTHON_ENV=/path/to/env/bin` if you want them to call a specific Conda environment explicitly.
 
 ## Smoke Test
 
@@ -76,20 +88,23 @@ Before launching a full run, use the smoke test to verify the package structure 
 
 ```bash
 python scripts/smoke_test.py
+python scripts/check_project_page.py
 ```
 
-This does not download models or run training. It only checks that the main Python entry points and project-page assets are wired up correctly.
+These checks do not download models or run training. They only verify that the main Python entry points and project-page assets are wired up correctly.
 
 ## Training
 
 ### 1. Prepare environment variables
 
 ```bash
-export PYTHON_ENV=/path/to/your/conda/envs/ffr/bin
 export MODEL_PATH=/path/to/Qwen2.5-VL-7B-COT-SFT
 export DATASET_PATH=/path/to/rl_data.json
 export VIDEO_DATA_PATH=/path/to/Video-R1-data
 export API_KEY=your_teacher_api_key
+
+# Optional: force scripts to use a specific environment instead of PATH.
+export PYTHON_ENV=/path/to/your/conda/envs/ffr/bin
 ```
 
 ### 2. Launch GRPO + FFR
@@ -145,12 +160,13 @@ Relevant environment variables:
 
 ## Project Page
 
-The academic project page lives in [`docs/`](./docs/) and is ready for local preview now. GitHub Pages can stay disabled until you want to publish it.
+The academic project page lives in [`docs/`](./docs/) and is ready for GitHub Pages deployment.
 
-Current / planned URLs:
+Current URLs:
 
+- Paper: `https://arxiv.org/abs/2604.16243`
 - Repository: `https://github.com/JethroJames/FFR`
-- Planned project page: `https://jethrojames.github.io/FFR/`
+- Project page: `https://jethrojames.github.io/FFR/`
 
 For local preview, you can either open `docs/index.html` directly or run:
 
@@ -160,20 +176,37 @@ python -m http.server 8000
 ```
 
 If you later enable GitHub Pages, configure the repository to publish from the `docs/` directory on the `main` branch.
+This repository also includes a Pages deployment workflow under `.github/workflows/pages.yml`; if you prefer Actions-based Pages, set the repository Pages source to "GitHub Actions".
 
 ## Paper Assets
 
-Bundled local assets:
+Canonical public assets:
+
+- arXiv abstract: <https://arxiv.org/abs/2604.16243>
+- arXiv PDF: <https://arxiv.org/pdf/2604.16243>
+
+Bundled local backup assets:
 
 - Main paper: [`docs/assets/papers/ffr-paper.pdf`](./docs/assets/papers/ffr-paper.pdf)
 - Supplement: [`docs/assets/papers/ffr-supplement.pdf`](./docs/assets/papers/ffr-supplement.pdf)
 
+## Known Limitations
+
+- Full training requires a multi-GPU Linux environment and the CUDA-specific dependencies listed in `environment.yml`.
+- Teacher-guided FFR training depends on an external VLM API key and quota.
+- Dataset paths are intentionally provided as examples; update `configs/dataset_config.example.json` or set `EVAL_DATA_ROOT` for your local benchmark layout.
+
 ## Citation
 
 ```bibtex
-@inproceedings{ffr2026,
+@misc{huang2026findfixreason,
   title={Find, Fix, Reason: Context Repair for Video Reasoning},
-  booktitle={ICML},
-  year={2026}
+  author={Huang, Haojian and Qin, Chuanyu and Li, Yinchuan and Chen, Yingcong},
+  year={2026},
+  eprint={2604.16243},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  doi={10.48550/arXiv.2604.16243},
+  url={https://arxiv.org/abs/2604.16243}
 }
 ```
