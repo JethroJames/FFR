@@ -66,6 +66,36 @@ See [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) for the final publish check
 - Code: <https://github.com/JethroJames/FFR>
 - Project page target: <https://jethrojames.github.io/FFR/>
 
+## Quick Start
+
+This is the shortest path for checking the repository and launching a run after you have model weights, datasets, videos, and teacher API access.
+
+```bash
+conda env create -f environment.yml
+conda activate ffr
+
+python scripts/smoke_test.py
+python scripts/check_project_page.py
+
+export MODEL_PATH=/path/to/Qwen2.5-VL-7B-COT-SFT
+export DATASET_PATH=/path/to/rl_data.json
+export VIDEO_DATA_PATH=/path/to/Video-R1-data
+export API_KEY=your_teacher_api_key
+
+bash scripts/train_grpo.sh
+```
+
+For evaluation, point the script to a checkpoint and either set `EVAL_DATA_ROOT` or pass a dataset mapping file:
+
+```bash
+bash scripts/run_eval.sh \
+  --model_path /path/to/checkpoint \
+  --file_name release_eval \
+  --output_dir ./eval_outputs \
+  --datasets mmvu mvbench \
+  --dataset_config configs/dataset_config.example.json
+```
+
 ## Environment
 
 Start from the provided Conda environment:
@@ -93,9 +123,36 @@ python scripts/check_project_page.py
 
 These checks do not download models or run training. They only verify that the main Python entry points and project-page assets are wired up correctly.
 
+## Data Format
+
+Training files can be `.json` or `.jsonl`. Each sample is expected to carry the video/question fields used by the training scripts:
+
+| Field | Used by | Description |
+| --- | --- | --- |
+| `problem_id` | GRPO/FFR | Stable sample identifier for logging and teacher calls |
+| `data_source` | GRPO/SFT | Key used to resolve the video root from `VIDEO_DATA_PATH` or `--video_path` |
+| `path` | GRPO/SFT | Relative or absolute video path |
+| `data_type` | GRPO/SFT | Usually `video`; passed to the Qwen-VL processor |
+| `problem_type` | GRPO/SFT | `multiple choice`, `numerical`, `OCR`, `free-form`, or `regression` |
+| `problem` | GRPO/SFT | Question text |
+| `options` | GRPO/SFT | Multiple-choice options, required when `problem_type` is `multiple choice` |
+| `solution` | GRPO/SFT | Ground-truth answer in `<answer>...</answer>` format for reward/evaluation |
+| `process` | SFT | Teacher or reference reasoning trace used by SFT |
+
+For evaluation, use [`configs/dataset_config.example.json`](./configs/dataset_config.example.json) as the template:
+
+```json
+{
+  "mmvu": {
+    "json": "/absolute/path/to/valid_data/mmvu.json",
+    "video": "/absolute/path/to/MMVU"
+  }
+}
+```
+
 ## Training
 
-### 1. Prepare environment variables
+### 1. Prepare Environment Variables
 
 ```bash
 export MODEL_PATH=/path/to/Qwen2.5-VL-7B-COT-SFT
@@ -107,11 +164,15 @@ export API_KEY=your_teacher_api_key
 export PYTHON_ENV=/path/to/your/conda/envs/ffr/bin
 ```
 
+`VIDEO_DATA_PATH` is used by the shell launchers to build a video path mapping. For custom multi-source datasets, call `ffr/train/grpo.py` or `ffr/train/sft.py` directly with `--video_path '{"Video-R1":"/path/to/videos","STAR":"/path/to/star"}'`.
+
 ### 2. Launch GRPO + FFR
 
 ```bash
 bash scripts/train_grpo.sh
 ```
+
+This starts the teacher FastAPI service, waits for `/health`, and then launches distributed GRPO with FFR enabled.
 
 ### 3. Launch SFT
 
@@ -119,7 +180,9 @@ bash scripts/train_grpo.sh
 bash scripts/train_sft.sh
 ```
 
-### 4. Run ablations
+SFT expects the same video fields plus a `process` field containing the reference reasoning trace.
+
+### 4. Run Ablations
 
 ```bash
 bash scripts/run_ablation.sh --patch_tax 0.3

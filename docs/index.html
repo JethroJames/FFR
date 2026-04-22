@@ -101,7 +101,7 @@
     <section class="hero">
       <div class="container narrow center">
         <h1>Find, Fix, Reason: Context Repair for Video Reasoning</h1>
-        <p class="venue">ICML 2026</p>
+        <p class="venue">Preprint</p>
         <p class="subtitle">
           A teacher-guided repair framework that turns failed video-reasoning rollouts into evidence-aligned training signals.
         </p>
@@ -145,9 +145,31 @@
         <figure class="paper-figure wide">
           <img src="./assets/figures/teaser-regimes.png" alt="Comparison of on-policy training, hybrid replay, tool-use loops, and the FFR context repair regime.">
           <figcaption>
-            FFR repairs failed rollouts by adding a minimal evidence patch from the original video, then lets the same policy reason again under the original question.
+            The teaser contrasts four ways to train video reasoners. FFR keeps the rollout on the student's policy, but repairs the missing observation with a minimal teacher-provided evidence patch.
           </figcaption>
         </figure>
+        <div class="regime-explainer" aria-label="Explanation of the four training regimes in the teaser figure">
+          <article class="regime-note">
+            <span>(a)</span>
+            <h3>On-Policy RL</h3>
+            <p>The student only learns from its own sampled rollouts, so progress depends on what it can already discover by itself.</p>
+          </article>
+          <article class="regime-note">
+            <span>(b)</span>
+            <h3>Hybrid Replay</h3>
+            <p>Past or off-policy traces are mixed back into training, improving coverage but introducing distribution-shift concerns.</p>
+          </article>
+          <article class="regime-note">
+            <span>(c)</span>
+            <h3>Tool-Use Reasoning</h3>
+            <p>The model repeatedly calls external tools at inference time to retrieve more context before answering.</p>
+          </article>
+          <article class="regime-note active">
+            <span>(d)</span>
+            <h3>FFR Context Repair</h3>
+            <p>A frozen teacher intervenes only on failed rollouts, points to missing video evidence, and lets the same policy reason again.</p>
+          </article>
+        </div>
         <p class="tldr">
           <strong>TL;DR:</strong> FFR keeps video RL on-policy while using a stronger frozen teacher to expose the missing spatiotemporal evidence behind failed rollouts.
         </p>

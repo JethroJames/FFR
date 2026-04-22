@@ -269,6 +269,51 @@ h3 {
   background: var(--white);
 }
 
+.regime-explainer {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 1030px;
+  margin: 18px auto 0;
+}
+
+.regime-note {
+  min-height: 164px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.regime-note span {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: var(--blue);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.regime-note h3 {
+  font-size: 1rem;
+}
+
+.regime-note p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.48;
+}
+
+.regime-note.active {
+  border-color: rgba(15, 118, 110, 0.38);
+  background: #eef7f6;
+}
+
+.regime-note.active span,
+.regime-note.active h3 {
+  color: var(--teal);
+}
+
 figcaption {
   max-width: 980px;
   margin: 12px auto 0;
@@ -533,7 +578,8 @@ section,
 @media (max-width: 900px) {
   .method-grid,
   .finding-grid,
-  .stat-grid {
+  .stat-grid,
+  .regime-explainer {
     grid-template-columns: 1fr;
   }
 
