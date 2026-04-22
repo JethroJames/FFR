@@ -1,199 +1,102 @@
-# FFR: Find, Fix, Reason
+# Find, Fix, Reason
 
-Context Repair for Video Reasoning
+Code and project page for **Find, Fix, Reason: Context Repair for Video Reasoning**.
 
-This repository contains the code and project page assets for **FFR (Find, Fix, Reason)**, a teacher-guided training framework for video reasoning. FFR uses a frozen teacher model to diagnose failed rollouts, provide a minimal evidence patch from the original video, and let the student reason again under the same question. The resulting repaired rollout is then integrated into GRPO with a patch tax to discourage over-reliance on teacher assistance.
+FFR trains video reasoners with a teacher-guided context repair step. When a rollout fails, a frozen teacher identifies the missing or wrong visual context, provides a small evidence patch from the original video, and the student retries the same question. The repaired rollout is then used in GRPO with a penalty on teacher assistance.
 
-## Highlights
+- Paper: <https://arxiv.org/abs/2604.16243>
+- Project page: <https://jethrojames.github.io/FFR/>
+- Appendix PDF: [`docs/assets/papers/ffr-appendix.pdf`](./docs/assets/papers/ffr-appendix.pdf)
 
-- Observation-level intervention instead of full off-policy trajectory replacement
-- Minimal evidence patches with explicit anti-leakage constraints
-- GRPO-based training with teacher-guided repair
-- Evaluation and ablation entry points for the main benchmarks in the paper
-- A bundled GitHub Pages-style project site under [`docs/`](./docs/)
-- Public paper metadata wired to arXiv: [`2604.16243`](https://arxiv.org/abs/2604.16243)
+This repository is a research release. Training still requires the relevant datasets, model checkpoints, video files, and teacher API access.
 
 ## Repository Layout
 
 ```text
-FFR-code/
-|-- configs/
-|   |-- dataset_config.example.json
-|   `-- deepspeed/
-|-- docs/                       # GitHub Pages project site
-|-- ffr/
-|   |-- data/
-|   |-- eval/
-|   |-- teacher/
-|   |-- train/
-|   `-- trainer/
-|-- scripts/
-|   |-- check_project_page.py
-|   |-- run_ablation.sh
-|   |-- run_eval.sh
-|   |-- smoke_test.py
-|   |-- train_grpo.sh
-|   `-- train_sft.sh
-|-- environment.yml
-|-- CODE_COMPLETENESS_AUDIT.md
-`-- README.md
+configs/                    Example dataset and DeepSpeed configs
+docs/                       Static project page for GitHub Pages
+ffr/                        Training, teacher, data, and evaluation code
+scripts/                    Launchers and sanity checks
+environment.yml             Conda environment
+CODE_COMPLETENESS_AUDIT.md  Notes on current code coverage and limitations
 ```
 
-## Release Status
+## Setup
 
-The core research code is present, but this release should still be viewed as a **research artifact** rather than a fully turnkey product.
-
-Already addressed in this workspace:
-
-- package import issues in the GRPO and teacher paths
-- public-facing project page under `docs/`
-- basic release scaffolding (`environment.yml`, smoke test, dataset config example)
-- final arXiv and GitHub URLs in the README and project page
-
-Still recommended for stronger reproducibility:
-
-- publish exact model checkpoint and dataset access instructions when those artifacts are ready
-- run the full training/evaluation environment on the target Linux + CUDA stack
-
-See [`CODE_COMPLETENESS_AUDIT.md`](./CODE_COMPLETENESS_AUDIT.md) for a more detailed review.
-See [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) for the final publish checklist.
-
-## Paper and Links
-
-- Paper: <https://arxiv.org/abs/2604.16243>
-- PDF: <https://arxiv.org/pdf/2604.16243>
-- DOI: <https://doi.org/10.48550/arXiv.2604.16243>
-- Code: <https://github.com/JethroJames/FFR>
-- Project page target: <https://jethrojames.github.io/FFR/>
-
-## Quick Start
-
-This is the shortest path for checking the repository and launching a run after you have model weights, datasets, videos, and teacher API access.
-
-```bash
-conda env create -f environment.yml
-conda activate ffr
-
-python scripts/smoke_test.py
-python scripts/check_project_page.py
-
-export MODEL_PATH=/path/to/Qwen2.5-VL-7B-COT-SFT
-export DATASET_PATH=/path/to/rl_data.json
-export VIDEO_DATA_PATH=/path/to/Video-R1-data
-export API_KEY=your_teacher_api_key
-
-bash scripts/train_grpo.sh
-```
-
-For evaluation, point the script to a checkpoint and either set `EVAL_DATA_ROOT` or pass a dataset mapping file:
-
-```bash
-bash scripts/run_eval.sh \
-  --model_path /path/to/checkpoint \
-  --file_name release_eval \
-  --output_dir ./eval_outputs \
-  --datasets mmvu mvbench \
-  --dataset_config configs/dataset_config.example.json
-```
-
-## Environment
-
-Start from the provided Conda environment:
+Linux with CUDA is recommended for training and evaluation.
 
 ```bash
 conda env create -f environment.yml
 conda activate ffr
 ```
 
-Notes:
+Some CUDA-dependent packages, such as `flash-attn`, may need to be installed separately for your local driver and PyTorch stack.
 
-- The environment file covers the main Python dependencies used by the codebase.
-- `flash-attn` and some distributed-training dependencies are hardware/platform sensitive and may still need to be installed separately depending on your CUDA stack.
-- Linux is the recommended runtime for training and evaluation.
-- The shell launchers use `python` and `torchrun` from your active shell by default. Set `PYTHON_ENV=/path/to/env/bin` if you want them to call a specific Conda environment explicitly.
-
-## Smoke Test
-
-Before launching a full run, use the smoke test to verify the package structure and release assets:
+Run the lightweight checks first:
 
 ```bash
 python scripts/smoke_test.py
 python scripts/check_project_page.py
 ```
 
-These checks do not download models or run training. They only verify that the main Python entry points and project-page assets are wired up correctly.
+These checks only verify imports, script wiring, and website assets. They do not download models or run training.
 
-## Data Format
+## Data
 
-Training files can be `.json` or `.jsonl`. Each sample is expected to carry the video/question fields used by the training scripts:
+Training data can be `.json` or `.jsonl`. Each sample should include the fields used by the launchers:
 
-| Field | Used by | Description |
-| --- | --- | --- |
-| `problem_id` | GRPO/FFR | Stable sample identifier for logging and teacher calls |
-| `data_source` | GRPO/SFT | Key used to resolve the video root from `VIDEO_DATA_PATH` or `--video_path` |
-| `path` | GRPO/SFT | Relative or absolute video path |
-| `data_type` | GRPO/SFT | Usually `video`; passed to the Qwen-VL processor |
-| `problem_type` | GRPO/SFT | `multiple choice`, `numerical`, `OCR`, `free-form`, or `regression` |
-| `problem` | GRPO/SFT | Question text |
-| `options` | GRPO/SFT | Multiple-choice options, required when `problem_type` is `multiple choice` |
-| `solution` | GRPO/SFT | Ground-truth answer in `<answer>...</answer>` format for reward/evaluation |
-| `process` | SFT | Teacher or reference reasoning trace used by SFT |
+| Field | Description |
+| --- | --- |
+| `problem_id` | Stable sample id |
+| `data_source` | Dataset key used to resolve the video root |
+| `path` | Relative or absolute video path |
+| `data_type` | Usually `video` |
+| `problem_type` | Question type, such as `multiple choice` or `free-form` |
+| `problem` | Question text |
+| `options` | Multiple-choice options, when needed |
+| `solution` | Ground-truth answer, usually in `<answer>...</answer>` format |
+| `process` | Reference reasoning trace for SFT |
 
-For evaluation, use [`configs/dataset_config.example.json`](./configs/dataset_config.example.json) as the template:
-
-```json
-{
-  "mmvu": {
-    "json": "/absolute/path/to/valid_data/mmvu.json",
-    "video": "/absolute/path/to/MMVU"
-  }
-}
-```
+For evaluation datasets, start from [`configs/dataset_config.example.json`](./configs/dataset_config.example.json).
 
 ## Training
 
-### 1. Prepare Environment Variables
+Set the main paths and teacher API key:
 
 ```bash
-export MODEL_PATH=/path/to/Qwen2.5-VL-7B-COT-SFT
-export DATASET_PATH=/path/to/rl_data.json
-export VIDEO_DATA_PATH=/path/to/Video-R1-data
+export MODEL_PATH=/path/to/base-or-sft-checkpoint
+export DATASET_PATH=/path/to/train.json
+export VIDEO_DATA_PATH=/path/to/video/root
 export API_KEY=your_teacher_api_key
-
-# Optional: force scripts to use a specific environment instead of PATH.
-export PYTHON_ENV=/path/to/your/conda/envs/ffr/bin
 ```
 
-`VIDEO_DATA_PATH` is used by the shell launchers to build a video path mapping. For custom multi-source datasets, call `ffr/train/grpo.py` or `ffr/train/sft.py` directly with `--video_path '{"Video-R1":"/path/to/videos","STAR":"/path/to/star"}'`.
+Optional teacher settings:
 
-### 2. Launch GRPO + FFR
+```bash
+export API_BASE=https://api.siliconflow.cn/v1
+export MODEL_NAME=zai-org/GLM-4.5V
+export TIMEOUT_SECONDS=45
+```
+
+Launch GRPO with FFR:
 
 ```bash
 bash scripts/train_grpo.sh
 ```
 
-This starts the teacher FastAPI service, waits for `/health`, and then launches distributed GRPO with FFR enabled.
-
-### 3. Launch SFT
+Launch SFT:
 
 ```bash
 bash scripts/train_sft.sh
 ```
 
-SFT expects the same video fields plus a `process` field containing the reference reasoning trace.
-
-### 4. Run Ablations
+The shell launchers use `python` and `torchrun` from the active environment. To force a specific environment, set:
 
 ```bash
-bash scripts/run_ablation.sh --patch_tax 0.3
+export PYTHON_ENV=/path/to/conda/envs/ffr/bin
 ```
 
 ## Evaluation
-
-The evaluation script supports either:
-
-- a dataset root via `EVAL_DATA_ROOT`, or
-- an explicit JSON mapping file via `--dataset_config`
 
 Example:
 
@@ -206,57 +109,37 @@ bash scripts/run_eval.sh \
   --dataset_config configs/dataset_config.example.json
 ```
 
-The expected structure of the dataset mapping file is provided in [`configs/dataset_config.example.json`](./configs/dataset_config.example.json).
-
-## Teacher API
-
-The teacher model runs as a separate FastAPI service during FFR training.
-
-Relevant environment variables:
-
-| Variable | Default | Description |
-| --- | --- | --- |
-| `API_KEY` | required | API key for the teacher backend |
-| `API_BASE` | `https://api.siliconflow.cn/v1` | API base URL |
-| `MODEL_NAME` | `zai-org/GLM-4.5V` | Teacher model name |
-| `TIMEOUT_SECONDS` | `45` | Request timeout |
+You can also set `EVAL_DATA_ROOT` if your benchmark files follow the expected local layout.
 
 ## Project Page
 
-The academic project page lives in [`docs/`](./docs/) and is ready for GitHub Pages deployment.
+The project page is a static site under [`docs/`](./docs/).
 
-Current and target URLs:
-
-- Paper: `https://arxiv.org/abs/2604.16243`
-- Repository: `https://github.com/JethroJames/FFR`
-- Project page target after GitHub Pages is enabled: `https://jethrojames.github.io/FFR/`
-
-For local preview, you can either open `docs/index.html` directly or run:
+Local preview:
 
 ```bash
-cd docs
-python -m http.server 8000
+python -m http.server 8000 --directory docs
 ```
 
-If you later enable GitHub Pages, configure the repository to publish from the `docs/` directory on the `main` branch.
-This repository also includes a Pages deployment workflow under `.github/workflows/pages.yml`; if you prefer Actions-based Pages, set the repository Pages source to "GitHub Actions".
+Then open:
 
-## Paper Assets
+```text
+http://127.0.0.1:8000/
+```
 
-Canonical public assets:
+Deployment is handled by [`.github/workflows/pages.yml`](./.github/workflows/pages.yml). After GitHub Pages is enabled for the repository, pushes to `main` that change `docs/**` will publish the site to:
 
-- arXiv abstract: <https://arxiv.org/abs/2604.16243>
-- arXiv PDF: <https://arxiv.org/pdf/2604.16243>
+```text
+https://jethrojames.github.io/FFR/
+```
 
-Bundled local page asset:
+If the first deployment does not start automatically, run the `deploy-pages` workflow manually from the repository's Actions tab.
 
-- Appendix: [`docs/assets/papers/ffr-appendix.pdf`](./docs/assets/papers/ffr-appendix.pdf)
+## Notes
 
-## Known Limitations
-
-- Full training requires a multi-GPU Linux environment and the CUDA-specific dependencies listed in `environment.yml`.
-- Teacher-guided FFR training depends on an external VLM API key and quota.
-- Dataset paths are intentionally provided as examples; update `configs/dataset_config.example.json` or set `EVAL_DATA_ROOT` for your local benchmark layout.
+- Full training has not been packaged as a one-command reproduction; paths and cluster settings should be adjusted locally.
+- Teacher-guided repair depends on external VLM API availability and quota.
+- Checkpoint and dataset release details should be filled in when those artifacts are ready.
 
 ## Citation
 
