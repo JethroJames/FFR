@@ -232,11 +232,13 @@ h3 {
 
 .action {
   gap: 10px;
-  min-width: 142px;
-  padding: 10px 16px;
+  min-width: 150px;
+  padding: 10px 18px 10px 12px;
+  border-color: transparent;
+  box-shadow: 0 12px 28px rgba(24, 32, 45, 0.08);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
-.action.primary,
 .copy-button:hover,
 .gallery-tab.is-active {
   border-color: var(--blue);
@@ -244,9 +246,86 @@ h3 {
   color: var(--white);
 }
 
+.action i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  font-size: 1.08rem;
+}
+
+.action span {
+  line-height: 1;
+}
+
+.action.resource-arxiv {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--white);
+}
+
+.action.resource-arxiv i {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--white);
+}
+
+.action.resource-pdf {
+  border-color: #e4beb8;
+  background: #fff3f0;
+  color: #5c2119;
+}
+
+.action.resource-pdf i {
+  background: var(--coral);
+  color: var(--white);
+}
+
+.action.resource-appendix {
+  border-color: #b8d8d4;
+  background: #eef7f6;
+  color: #164a45;
+}
+
+.action.resource-appendix i {
+  background: var(--teal);
+  color: var(--white);
+}
+
+.action.resource-code {
+  border-color: #111827;
+  background: #111827;
+  color: var(--white);
+}
+
+.action.resource-code i {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+  font-size: 1.18rem;
+}
+
 .action:hover,
 .gallery-tab:hover {
   border-color: var(--blue);
+}
+
+.action:hover {
+  box-shadow: 0 16px 34px rgba(24, 32, 45, 0.13);
+  transform: translateY(-1px);
+}
+
+.action.resource-pdf:hover {
+  border-color: var(--coral);
+}
+
+.action.resource-appendix:hover {
+  border-color: var(--teal);
+}
+
+.action.resource-code:hover {
+  border-color: #111827;
+  background: #0b1220;
 }
 
 .teaser-section {
