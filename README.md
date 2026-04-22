@@ -1,14 +1,14 @@
 # Find, Fix, Reason
 
-Code and project page for **Find, Fix, Reason: Context Repair for Video Reasoning**.
+Code for **Find, Fix, Reason: Context Repair for Video Reasoning**.
 
-FFR trains video reasoners with a teacher-guided context repair step. When a rollout fails, a frozen teacher identifies the missing or wrong visual context, provides a small evidence patch from the original video, and the student retries the same question. The repaired rollout is then used in GRPO with a penalty on teacher assistance.
+FFR trains video reasoners with teacher-guided context repair: failed rollouts receive a small evidence patch from a frozen teacher, and the repaired rollout is used in GRPO with a penalty on teacher assistance.
 
 - Paper: <https://arxiv.org/abs/2604.16243>
 - Project page: <https://jethrojames.github.io/FFR/>
 - Appendix PDF: [`docs/assets/papers/ffr-appendix.pdf`](./docs/assets/papers/ffr-appendix.pdf)
 
-This repository is a research release. Training still requires the relevant datasets, model checkpoints, video files, and teacher API access.
+This is a research release. Training requires datasets, model checkpoints, video files, and teacher API access.
 
 ## Repository Layout
 
@@ -29,15 +29,13 @@ conda env create -f environment.yml
 conda activate ffr
 ```
 
-Some CUDA-dependent packages, such as `flash-attn`, may need to be installed separately for your local driver and PyTorch stack.
-
-Run the lightweight checks first:
+Some CUDA-dependent packages, such as `flash-attn`, may need local installation for your driver and PyTorch stack. After setup, run:
 
 ```bash
 python scripts/smoke_test.py
 ```
 
-This check only verifies imports, script wiring, and required public assets. It does not download models or run training.
+The smoke test checks imports, script wiring, and required public assets. It does not download models or run training.
 
 ## Data
 
@@ -59,7 +57,7 @@ For evaluation datasets, start from [`configs/dataset_config.example.json`](./co
 
 ## Training
 
-Set the main paths and teacher API key:
+Set paths and teacher API access:
 
 ```bash
 export MODEL_PATH=/path/to/base-or-sft-checkpoint
@@ -88,7 +86,7 @@ Launch SFT:
 bash scripts/train_sft.sh
 ```
 
-The shell launchers use `python` and `torchrun` from the active environment. To force a specific environment, set:
+To force a specific environment, set:
 
 ```bash
 export PYTHON_ENV=/path/to/conda/envs/ffr/bin
@@ -111,9 +109,7 @@ You can also set `EVAL_DATA_ROOT` if your benchmark files follow the expected lo
 
 ## Notes
 
-- Full training has not been packaged as a one-command reproduction; paths and cluster settings should be adjusted locally.
-- Teacher-guided repair depends on external VLM API availability and quota.
-- Checkpoint and dataset release details should be filled in when those artifacts are ready.
+This release is not a one-command reproduction package; adjust paths, cluster settings, checkpoints, datasets, and teacher API access for your local setup.
 
 ## Citation
 
