@@ -18,7 +18,6 @@ docs/                       Static project page for GitHub Pages
 ffr/                        Training, teacher, data, and evaluation code
 scripts/                    Launchers and sanity checks
 environment.yml             Conda environment
-CODE_COMPLETENESS_AUDIT.md  Notes on current code coverage and limitations
 ```
 
 ## Setup
@@ -36,10 +35,9 @@ Run the lightweight checks first:
 
 ```bash
 python scripts/smoke_test.py
-python scripts/check_project_page.py
 ```
 
-These checks only verify imports, script wiring, and website assets. They do not download models or run training.
+This check only verifies imports, script wiring, and required public assets. It does not download models or run training.
 
 ## Data
 

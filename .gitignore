@@ -45,3 +45,8 @@ Thumbs.db
 # Temporary
 *.tmp
 *.bak
+
+# Local project notes and paper build artifacts
+CLAUDE.md
+paper_source/
+*_Video_Reasoner.zip
