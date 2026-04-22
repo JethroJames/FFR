@@ -14,7 +14,7 @@ This repository is a research release. Training still requires the relevant data
 
 ```text
 configs/                    Example dataset and DeepSpeed configs
-docs/                       Static project page for GitHub Pages
+docs/                       Project page assets
 ffr/                        Training, teacher, data, and evaluation code
 scripts/                    Launchers and sanity checks
 environment.yml             Conda environment
@@ -108,30 +108,6 @@ bash scripts/run_eval.sh \
 ```
 
 You can also set `EVAL_DATA_ROOT` if your benchmark files follow the expected local layout.
-
-## Project Page
-
-The project page is a static site under [`docs/`](./docs/).
-
-Local preview:
-
-```bash
-python -m http.server 8000 --directory docs
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8000/
-```
-
-Deployment is handled by [`.github/workflows/pages.yml`](./.github/workflows/pages.yml). After GitHub Pages is enabled for the repository, pushes to `main` that change `docs/**` will publish the site to:
-
-```text
-https://jethrojames.github.io/FFR/
-```
-
-If the first deployment does not start automatically, run the `deploy-pages` workflow manually from the repository's Actions tab.
 
 ## Notes
 
