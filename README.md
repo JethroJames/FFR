@@ -64,7 +64,7 @@ See [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) for the final publish check
 - PDF: <https://arxiv.org/pdf/2604.16243>
 - DOI: <https://doi.org/10.48550/arXiv.2604.16243>
 - Code: <https://github.com/JethroJames/FFR>
-- Project page: <https://jethrojames.github.io/FFR/>
+- Project page target: <https://jethrojames.github.io/FFR/>
 
 ## Environment
 
@@ -162,11 +162,11 @@ Relevant environment variables:
 
 The academic project page lives in [`docs/`](./docs/) and is ready for GitHub Pages deployment.
 
-Current URLs:
+Current and target URLs:
 
 - Paper: `https://arxiv.org/abs/2604.16243`
 - Repository: `https://github.com/JethroJames/FFR`
-- Project page: `https://jethrojames.github.io/FFR/`
+- Project page target after GitHub Pages is enabled: `https://jethrojames.github.io/FFR/`
 
 For local preview, you can either open `docs/index.html` directly or run:
 
