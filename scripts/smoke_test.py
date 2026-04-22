@@ -27,8 +27,7 @@ def check_paths() -> None:
         ROOT / "docs" / "assets" / "figures" / "method-overview.png",
         ROOT / "docs" / "assets" / "figures" / "case-study.png",
         ROOT / "docs" / "assets" / "figures" / "social-preview.png",
-        ROOT / "docs" / "assets" / "papers" / "ffr-paper.pdf",
-        ROOT / "docs" / "assets" / "papers" / "ffr-supplement.pdf",
+        ROOT / "docs" / "assets" / "papers" / "ffr-appendix.pdf",
         ROOT / "scripts" / "check_project_page.py",
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.exists()]

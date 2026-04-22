@@ -35,8 +35,7 @@ jobs:
               root / "docs" / "assets" / "figures" / "method-overview.png",
               root / "docs" / "assets" / "figures" / "case-study.png",
               root / "docs" / "assets" / "figures" / "social-preview.png",
-              root / "docs" / "assets" / "papers" / "ffr-paper.pdf",
-              root / "docs" / "assets" / "papers" / "ffr-supplement.pdf",
+              root / "docs" / "assets" / "papers" / "ffr-appendix.pdf",
               root / "scripts" / "check_project_page.py",
           ]
           missing = [str(path) for path in required if not path.exists()]

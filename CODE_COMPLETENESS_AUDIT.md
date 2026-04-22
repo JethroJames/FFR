@@ -49,11 +49,11 @@ The repository includes a polished academic website under `docs/` with:
 - benchmark tables
 - ablation/teacher/leakage/training-dynamics panels
 - interactive case explorer
-- bundled paper and supplement assets
+- arXiv paper links and a bundled appendix asset
 
 This is sufficient for GitHub Pages deployment.
 
-The project page now links to the public arXiv record (`2604.16243`), arXiv PDF, supplement, and GitHub repository.
+The project page now links to the public arXiv record (`2604.16243`), arXiv PDF, appendix PDF, and GitHub repository.
 
 ### 4. Basic verification coverage
 

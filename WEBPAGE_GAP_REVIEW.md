@@ -11,7 +11,7 @@ The project page is already stronger than a typical bare-bones academic page bec
 - method and results sections with figures
 - a static benchmark table with highlighted FFR variants
 - a tabbed visual evidence gallery
-- bundled paper and supplement downloads
+- arXiv paper links and a bundled appendix download
 - public arXiv, PDF, and GitHub links
 
 That means the page is already beyond the usual "title + authors + teaser + bibtex" level.

@@ -185,10 +185,9 @@ Canonical public assets:
 - arXiv abstract: <https://arxiv.org/abs/2604.16243>
 - arXiv PDF: <https://arxiv.org/pdf/2604.16243>
 
-Bundled local backup assets:
+Bundled local page asset:
 
-- Main paper: [`docs/assets/papers/ffr-paper.pdf`](./docs/assets/papers/ffr-paper.pdf)
-- Supplement: [`docs/assets/papers/ffr-supplement.pdf`](./docs/assets/papers/ffr-supplement.pdf)
+- Appendix: [`docs/assets/papers/ffr-appendix.pdf`](./docs/assets/papers/ffr-appendix.pdf)
 
 ## Known Limitations
 
