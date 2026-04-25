@@ -106,14 +106,10 @@ This release is not a one-command reproduction package; adjust paths, cluster se
 ## Citation
 
 ```bibtex
-@misc{huang2026findfixreason,
+@article{huang2026find,
   title={Find, Fix, Reason: Context Repair for Video Reasoning},
   author={Huang, Haojian and Qin, Chuanyu and Li, Yinchuan and Chen, Yingcong},
-  year={2026},
-  eprint={2604.16243},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV},
-  doi={10.48550/arXiv.2604.16243},
-  url={https://arxiv.org/abs/2604.16243}
+  journal={arXiv preprint arXiv:2604.16243},
+  year={2026}
 }
 ```
