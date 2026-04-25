@@ -1,14 +1,6 @@
 # Find, Fix, Reason
 
-Code for **Find, Fix, Reason: Context Repair for Video Reasoning**.
-
 FFR trains video reasoners with teacher-guided context repair: failed rollouts receive a small evidence patch from a frozen teacher, and the repaired rollout is used in GRPO with a penalty on teacher assistance.
-
-- Paper: <https://arxiv.org/abs/2604.16243>
-- Project page: <https://jethrojames.github.io/FFR/>
-- Appendix PDF: [`docs/assets/papers/ffr-appendix.pdf`](./docs/assets/papers/ffr-appendix.pdf)
-
-This is a research release. Training requires datasets, model checkpoints, video files, and teacher API access.
 
 ## Repository Layout
 
